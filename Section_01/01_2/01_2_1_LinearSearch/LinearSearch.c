@@ -1,3 +1,5 @@
+// 01-2. 알고리즘의 성능 분석 방법
+
 #include <stdio.h>
 
 // 선형 탐색 (Linear Search)

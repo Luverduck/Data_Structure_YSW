@@ -1,9 +1,10 @@
+// Chapter 01. 자료 구조와 알고리즘의 이해
 // 01-2. 알고리즘의 성능 분석 방법
 
 #include <stdio.h>
 
 // 이진 탐색 (Binary Search)
-int BinarySearch(int* arr, int len, int target)
+int binarySearch(int* arr, int len, int target)
 {
     int first = 0;
     int last = len - 1;
@@ -37,7 +38,7 @@ int main()
     int target = 9;
     int idx;
 
-    idx = BinarySearch(arr, sizeof(arr) / sizeof(int) , target);
+    idx = binarySearch(arr, sizeof(arr) / sizeof(int) , target);
 
     if(idx == -1)
         printf("탐색 실패\n");

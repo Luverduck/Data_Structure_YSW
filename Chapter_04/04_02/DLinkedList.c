@@ -7,7 +7,6 @@ void ListInit(List* plist)
 {
     plist->head = (Node*)malloc(sizeof(Node));  // 더미 노드 생성 및 리스트의 head로 설정
     plist->head->next = NULL;                   // 더미 노드의 다음 노드 주소를 NULL로 초기화
-    plist->comp = NULL;                         // 정렬 함수의 주소를 NULL로 초기화
     plist->numOfData = 0;                       // 리스트의 노드 갯수를 0으로 초기화 (더미 노드는 노드로 취급하지 않는다.)
 };
 
@@ -22,7 +21,6 @@ void LInsert(List* plist, LData data)
     newNode->next = plist->head->next;
     // 2) 생성한 노드를 head 노드로 설정
     plist->head->next = newNode;
-
     // 리스트에 저장된 데이터의 수 증가
     (plist->numOfData)++;
 };

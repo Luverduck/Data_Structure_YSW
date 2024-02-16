@@ -20,9 +20,8 @@ typedef struct _linkedList
 {
     Node* head;     // 더미 노드의 주소
     Node* cur;      // 리스트에서 참조한 데이터의 index
-    Node* before;   // 
-    int numOfData;
-    int (*comp)(LData d1, LData d2);
+    Node* before;   // 리스트에서 참조 및 삭제할 데이터의 index
+    int numOfData;  // 리스트의 노드 수
 } LinkedList;
 
 typedef LinkedList List;
@@ -44,8 +43,5 @@ LData LRemove(List* plist);
 
 // 리스트에 저장된 데이터의 갯수 반환
 int LCount(List* plist);
-
-// 정렬 (인자로 전달된 함수를 이용한 정렬)
-void SetSortRule(List* plist, int (*comp)(LData d1, LData d2));
 
 #endif

@@ -36,6 +36,8 @@ void SPush(Stack* pstack, Data data)
 // 삭제
 Data SPop(Stack* pstack)
 {
+    // 삭제할 데이터의 index
+    int rIdx;
     // 스택이 비어있을 경우
     if (SIsEmpty(pstack))
     {
@@ -43,7 +45,7 @@ Data SPop(Stack* pstack)
         exit(-1);
     }
     // topIndex를 삭제할 데이터의 index로 설정
-    int rIdx = pstack->topIndex;
+    rIdx = pstack->topIndex;
     // topIndex 감소
     pstack->topIndex -= 1;
     // 삭제할 데이터 반환
@@ -56,7 +58,7 @@ Data SPeak(Stack* pstack)
     // 스택이 비어있을 경우
     if (SIsEmpty(pstack))
     {
-        printf("Stack is Empty.\n");
+        printf("Stack is empty.\n");
         exit(-1);
     }
     // 스택의 topIndex 요소 반환

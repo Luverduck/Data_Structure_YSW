@@ -56,7 +56,7 @@ int GetHiPriChildIDX(Heap* pheap, int idx)
     }
 }
 
-// 힙에 데이터 입력
+// 데이터 넣기
 void HInsert(Heap* pheap, HData data, Priority priority)
 {
     // 노드 생성 및 초기화
@@ -74,7 +74,7 @@ void HInsert(Heap* pheap, HData data, Priority priority)
             idx = GetParentIDX(idx);
         }
         else // 생성한 노드의 우선순위가 낮을 경우
-            break; // 위치 교환 중지
+            break; // 위치 탐색 중지
     }
     // 최종적으로 결정된 인덱스에 생성한 노드 저장
     pheap->heapArr[idx] = newElement;
@@ -82,5 +82,31 @@ void HInsert(Heap* pheap, HData data, Priority priority)
     pheap->numOfData++;
 };
 
-// 힙에서 데이터 출력
-HData HDelete(Heap* pheap);
+// 데이터 꺼내기
+HData HDelete(Heap* pheap)
+{
+    // 마지막 노드
+    HeapElement lastElement = pheap->heapArr[pheap->numOfData];
+    // 반환할 데이터 (루트 노드의 데이터)
+    HData rdata = (pheap->heapArr[1]).data;
+    // 마지막 노드가 삽입될 위치
+    int parentIDX = 1; // 마지막 노드의 위치(parentIDX)를 루트 노드 위치(1)로 가정
+    int childIDX;
+    // 리프 노드에 도달할 때까지 반복 (자식 노드의 인덱스가 NULL일 때까지)
+    while (childIDX = GetHiPriChildIDX(pheap, parentIDX)) // childIDX != NULL
+    {
+        // 루트 노드로 옮긴 마지막 노드가 자식 노드보다 우선순위가 높을 경우
+        if (lastElement.priority <= pheap->heapArr[childIDX].priority)
+            break; // 위치 탐색 중지
+        // 부모 노드와 자식 노드의 위치 교환
+        pheap->heapArr[parentIDX] = pheap->heapArr[childIDX];
+        // 부모 노드의 인덱스를 자식 노드의 인덱스로 변경
+        parentIDX = childIDX;
+    }
+    // 최종적으로 결정된 인덱스에 마지막 노드 저장
+    pheap->heapArr[parentIDX] = lastElement;
+    // 힙에 저장된 데이터의 갯수 감소 (루트 노드를 꺼내기 했으므로)
+    pheap->numOfData--;
+    // 루트 노드에 있던 데이터 반환
+    return rdata;
+};

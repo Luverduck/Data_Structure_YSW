@@ -16,6 +16,7 @@ void SelectionSort(int arr[], int n)
     {
         // 교환할 데이터의 인덱스 초기화
         maxIDX = i;
+        // 최대값 탐색
         for (int j = i + 1; j < n; ++j)
         {
             // 현재 최대값 인덱스의 데이터가 j번째 데이터보다 큰 경우

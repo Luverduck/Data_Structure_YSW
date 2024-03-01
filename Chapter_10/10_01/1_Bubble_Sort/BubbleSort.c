@@ -1,5 +1,5 @@
 // Chapter 10. 정렬 (Sorting)
-// 10-1. 버블 정렬 (Bubble Sort)
+// 10-1. 단순한 정렬 알고리즘
 
 #include <stdio.h>
 

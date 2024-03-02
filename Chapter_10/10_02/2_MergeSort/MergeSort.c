@@ -71,7 +71,7 @@ void MergeSort(int arr[], int left, int right)
     // 중간 지점
     int mid;
     // 병합 정렬
-    if (left < right)
+    if (left < right) // left == right일 때 정렬할 데이터 단위가 하나이다.
     {
         // 중간 지점 계산
         mid = (left + right) / 2;

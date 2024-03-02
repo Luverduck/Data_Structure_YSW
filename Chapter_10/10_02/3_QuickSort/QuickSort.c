@@ -20,11 +20,11 @@ int Partition(int arr[], int left, int right)
     // 두 영역의 인덱스가 교차되지 않을 때까지 반복
     while (lowIDX <= highIDX)
     {
-        // 피벗보다 큰 값을 만날 때까지 반복
-        while (arr[lowIDX] < pivot)
+        // [수정] 피벗보다 크거나 같은 값을 만날 때까지 반복
+        while (arr[lowIDX] <= pivot && lowIDX <= right) // lowIDX의 상한
             lowIDX++;
-        // 피벗보다 작은 값을 만날 때까지 반복
-        while (arr[highIDX] > pivot)
+        // [수정] 피벗보다 작거나 같은 값을 만날 때까지 반복
+        while (arr[highIDX] >= pivot && highIDX >= (left + 1)) // highIDX의 하한
             highIDX--;
         // 교차되지 않은 상태라면 두 데이터의 위치 교환
         if (lowIDX <= highIDX)
@@ -54,8 +54,8 @@ void QuickSort(int arr[], int left, int right)
 
 int main()
 {
-    int arr[] = { 3, 2, 4, 1, 7, 6, 5 };
-    
+    //int arr[] = { 3, 2, 4, 1, 7, 6, 5 };
+    int arr[] = {3, 3, 3};
     int len = sizeof(arr) / sizeof(int);
 
     QuickSort(arr, 0, sizeof(arr) / sizeof(int) - 1);

@@ -46,7 +46,7 @@ int GetHiPriChildIDX(Heap* pheap, int idx)
 {
     if (GetLChildIDX(idx) > pheap->numOfData) // 자식 노드가 없는 경우
         return 0;
-    else if (GetLChildIDX(idx) > pheap->numOfData) // 왼쪽 자식 노드만 있는 경우
+    else if (GetLChildIDX(idx) == pheap->numOfData) // 왼쪽 자식 노드만 있는 경우
         return GetLChildIDX(idx);
     else
     {

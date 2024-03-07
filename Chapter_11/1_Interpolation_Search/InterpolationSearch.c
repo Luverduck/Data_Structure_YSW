@@ -11,8 +11,8 @@ int InterpolationSearch(int arr[], int low, int high, int target)
 {
     // 탐색 위치
     int mid;
-    // 재귀 호출로 인해 first와 last가 역전되는 경우
-    if (low > high)
+    // 재귀 호출로 인해 탐색 범위를 벗어나게 될 경우
+    if (arr[low] > target && arr[high] < target)
         return -1;  // 탐색 실패
     // 보간법을 통한 탐색 위치 결정
     mid = (((double)(target - arr[low])) / (arr[high] - arr[low]) * (high - low)) + low;
@@ -28,7 +28,7 @@ int InterpolationSearch(int arr[], int low, int high, int target)
 int main()
 {
     int arr[] = { 1, 3, 5, 7, 9 };
-    int target = 7;
+    int target = 2; // 없는 데이터를 탐색하는 경우
 
     int idx;
     idx = InterpolationSearch(arr, 0, sizeof(arr)/sizeof(int), target);

@@ -21,7 +21,7 @@ BSTData BSTGetNodeData(BTreeNode* bst)
 };
 
 // 이진 탐색 트리에 데이터 저장 및 리밸런싱
-void BSTInsert(BTreeNode** pRoot, BSTData data)
+BTreeNode* BSTInsert(BTreeNode** pRoot, BSTData data)
 {
     // 데이터 저장
     // i) 루트 노드가 NULL일 경우
@@ -33,7 +33,7 @@ void BSTInsert(BTreeNode** pRoot, BSTData data)
         SetData(*pRoot, data);
     }
     // ii) 저장할 데이터가 현재 노드의 데이터보다 작을 경우
-    else if (data < getData(*pRoot))
+    else if (data < GetData(*pRoot))
     {
         // 왼쪽 서브 트리를 탐색하여 노드 추가 및 데이터 저장
         BSTInsert(&((*pRoot)->left), data);
@@ -44,7 +44,7 @@ void BSTInsert(BTreeNode** pRoot, BSTData data)
     else if (data > GetData(*pRoot))
     {
         // 오른쪽 서브 트리를 탐색하여 노드 추가 및 데이터 저장
-        BSTInsert(&((*pRoot)->left), data);
+        BSTInsert(&((*pRoot)->right), data);
         // 재귀 호출이 끝나기 전에 현재 pRoot 노드의 리밸런싱 실행
         *pRoot = Rebalance(pRoot);
     }

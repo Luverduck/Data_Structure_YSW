@@ -117,7 +117,7 @@ BTreeNode* Rebalance(BTreeNode** pRoot)
     {
         // 서브 트리의 왼쪽 자식 노드에 대하여
         // i) 왼쪽 자식 노드의 균형 인수가 0보다 크면 LL 상태
-        if (GetHeight(GetLeftSubtree(*pRoot) > 0))
+        if (GetHeightDiff(GetLeftSubtree(*pRoot)) > 0)
             *pRoot = RotateLL(*pRoot); // LL 회전
         // ii) 왼쪽 자식 노드의 균형 인수가 0보다 작거나 같으면 LR 상태
         else
@@ -128,7 +128,7 @@ BTreeNode* Rebalance(BTreeNode** pRoot)
     {
         // 서브 트리의 오른쪽 자식 노드에 대하여
         // i) 오른쪽 자식 노드의 균형 인수가 0보다 작으면 RR 상태
-        if (GetHeight(GetRightSubtree(*pRoot) < 0))
+        if (GetHeightDiff(GetRightSubtree(*pRoot)) < 0)
             *pRoot = RotateRR(*pRoot); // RR 회전
         // ii) 오른쪽 자식 노드의 균형 인수가 0보다 크거나 같으면 RL 상태
         else

@@ -13,7 +13,7 @@ void BSTMakeAndInit(BTreeNode** proot);
 BSTData BSTGetNodeData(BTreeNode* bst);
 
 // 이진 탐색 트리에 데이터 저장
-void BSTInsert(BTreeNode** proot, BSTData data);
+BTreeNode* BSTInsert(BTreeNode** proot, BSTData data);
 
 // 이진 탐색 트리에서 데이터 탐색
 BTreeNode* BSTSearch(BTreeNode* pnode, BSTData target);

@@ -5,7 +5,7 @@
 // 테이블의 초기화
 void TBLInit(Table* ptable, HashFunc* pfunc)
 {
-    // 모든 슬롯의 상태를 '비어있음'으로 초기화
+    // 모든 슬롯의 초기화
     for (int i = 0; i < MAX_TBL; ++i)
         ListInit(&(ptable->slots[i])); // [변경] 리스트의 요소 초기화
     // 해시 함수 등록

@@ -51,10 +51,10 @@ void SInsert(List* plist, LData data)
     }
 
     // 생성한 노드 연결
-    // - 2) 왼쪽 연결
-    pred->next = newNode;
-    // - 3) 오른쪽 연결
+    // - 2) 오른쪽 연결
     newNode->next = pred->next;
+    // - 3) 왼쪽 연결
+    pred->next = newNode;
 
     // 리스트에 저장된 데이터의 수 증가
     (plist->numOfData)++;

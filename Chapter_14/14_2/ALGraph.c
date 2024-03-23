@@ -33,7 +33,7 @@ void GraphDestroy(ALGraph* pgraph)
 };
 
 // 간선의 추가
-void AddEdege(ALGraph* pgraph, int fromV, int toV)
+void AddEdge(ALGraph* pgraph, int fromV, int toV)
 {
     // 두 정점을 서로 연결
     LInsert(&(pgraph->adjList[fromV]), toV);

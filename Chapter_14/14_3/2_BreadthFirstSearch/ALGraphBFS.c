@@ -36,6 +36,9 @@ void GraphDestroy(ALGraph* pgraph)
 {
     if (pgraph->adjList != NULL)
         free(pgraph->adjList);
+
+    if (pgraph->visitInfo != NULL)
+        free(pgraph->visitInfo);
 };
 
 // 간선의 추가

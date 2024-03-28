@@ -22,5 +22,5 @@ void PEnqueue(PQueue* ppqueue, PQData data)
 // 우선순위 큐에서 데이터 출력
 PQData PDequeue(PQueue* ppqueue)
 {
-    HDelete(ppqueue);
+    return HDelete(ppqueue);
 };

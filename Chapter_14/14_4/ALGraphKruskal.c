@@ -99,8 +99,6 @@ int VisitVertex(ALGraph* pgraph, int visitV)
     {
         // '방문' 상태로 변경
         pgraph->visitInfo[visitV] = 1;
-        // 정점의 정보 출력
-        printf("%c ", visitV + 65);
         // TRUE 반환
         return TRUE;
     }
@@ -165,11 +163,11 @@ void DFShowGraphVertex(ALGraph* pgraph, int startV)
     memset(pgraph->visitInfo, 0, (sizeof(int) * pgraph->numV));
 };
 
-// 한 쪽 간선 삭제
+// 한 쪽 방향의 간선 삭제
 void RemoveWayEdge(ALGraph* pgraph, int fromV, int toV)
 {
     // 변수 선언
-    int targetV; // 선택한 정점
+    int targetV; // 탐색한 정점
     // fromV에 연결된 첫 번째 정점에 대하여
     if (LFirst(&(pgraph->adjList[fromV]), &targetV))
     {
@@ -183,9 +181,13 @@ void RemoveWayEdge(ALGraph* pgraph, int fromV, int toV)
         // 그 다음 정점들에 대하여
         while (LNext(&(pgraph->adjList[fromV]), &targetV))
         {
-            // fromV와의 연결 삭제 (간선 삭제)
-            LRemove(&(pgraph->adjList[fromV]));
-            return;
+            // 그 다음 정점이 삭제할 간선에 연결된 정점일 경우
+            if (targetV == toV)
+            {
+                // fromV와의 연결 삭제 (간선 삭제)
+                LRemove(&(pgraph->adjList[fromV]));
+                return;
+            }
         }
     }
 };
@@ -201,11 +203,98 @@ void RemoveEdge(ALGraph* pgraph, int fromV, int toV)
     (pgraph->numE)--;
 };
 
-// 두 정점이 연결되어 있는지 확인
-
-
 // 삭제된 간선을 다시 삽입
+void RecoverEdge(ALGraph* pgraph, int fromV, int toV, int weight)
+{
+    // fromV에서 toV 방향 간선 삽입 (연결 리스트 추가)
+    LInsert(&(pgraph->adjList[fromV]), toV);
+    // toV에서 fromV 방향 간선 삽입 (연결 리스트 추가)
+    LInsert(&(pgraph->adjList[toV]), fromV);
+    // 간선의 수 증가
+    (pgraph->numE)++;
+}
 
+// 두 정점이 연결되어 있는지 확인
+int IsConnectedVertex(ALGraph* pgraph, int vertex1, int vertex2)
+{
+    // 변수의 선언
+    Stack stack;
+    int visitV = vertex1;
+    int nextV;
+    // 스택 초기화
+    StackInit(&stack);
+    // 시작 정점의 방문
+    VisitVertex(pgraph, visitV);
+    // 시작 정점의 정보를 스택에 저장
+    SPush(&stack, visitV);
+    // 현재 정점에 연결된 첫 번째 정점이 NULL이 아닐 경우
+    while (LFirst(&(pgraph->adjList[visitV]), &nextV) == TRUE)
+    {
+        // 정점의 방문 여부를 FALSE로 초기화
+        int visitFlag = FALSE;
+
+        // 첫 번째 정점이 연결 여부를 확인하려는 정점일 경우 (연결되어있는 경우)
+        if (nextV == vertex2)
+        {
+            // 반환하기 전 방문한 정점 배열의 모든 요소를 0으로 초기화
+            memset(pgraph->visitInfo, 0, sizeof(int) * pgraph->numV);
+            // '연결되어 있음'(TRUE) 반환
+            return TRUE;
+        }
+
+        // 정점의 방문에 성공한 경우
+        if (VisitVertex(pgraph, nextV) == TRUE)
+        {
+            // 방문한 정점의 정보를 스택에 저장
+            SPush(&stack, visitV);
+            // 방문한 정점을 현재 정점으로 변경
+            visitV = nextV;
+            // 방문 여부를 TRUE로 변경
+            visitFlag = TRUE;
+        }
+        // 이미 방문한 정점일 경우
+        else
+        {
+            // 현재 정점에 연결된 다음 정점이 NULL이 아닐 경우
+            while (LNext(&(pgraph->adjList[visitV]), &nextV) == TRUE)
+            {
+                // 다음 정점이 연결 여부를 확인하려는 정점일 경우 (연결되어있는 경우)
+                if (nextV == vertex2)
+                {
+                    // 반환하기 전 방문한 정점 배열의 모든 요소를 0으로 초기화
+                    memset(pgraph->visitInfo, 0, sizeof(int) * pgraph->numV);
+                    // '연결되어 있음'(TRUE) 반환
+                    return TRUE;
+                }
+                // 정점의 방문에 성공한 경우
+                if (VisitVertex(pgraph, nextV) == TRUE)
+                {
+                    // 방문한 정점의 정보를 스택에 저장
+                    SPush(&stack, visitV);
+                    // 방문한 정점을 현재 정점으로 변경
+                    visitV = nextV;
+                    // 방문 여부를 TRUE로 변경
+                    visitFlag = TRUE;
+                    // 현재 정점에 연결된 정점 탐색 중지
+                    break;
+                }
+            }
+        }
+
+        // 정점의 방문 여부가 FALSE일 경우
+        if (visitFlag == FALSE)
+        {
+            if (SIsEmpty(&stack) == TRUE) // 스택이 비어있다면
+                break; // 탐색 완료
+            else // 스택이 비어있지 않다면
+                visitV = SPop(&stack); // 스택에서 정점을 꺼내서 다음 방문할 노드로 설정
+        }
+    }
+    // 반환하기 전 방문한 정점 배열의 모든 요소를 0으로 초기화
+    memset(pgraph->visitInfo, 0, sizeof(int) * pgraph->numV);
+    // '연결되어있지 않음'(FALSE) 반환
+    return FALSE;
+}
 
 // 최소 신장 트리 구성 (Kruskal 알고리즘 기반)
 void ConstructKruskalMST(ALGraph* pgraph)
@@ -215,7 +304,7 @@ void ConstructKruskalMST(ALGraph* pgraph)
     Edge recoverEdgeArray[20];  // 복원할 간선 배열
     int eIdx = 0;               // 복원할 간선 배열의 인덱스
     // 최소 신장 트리를 구성할 때까지 반복
-    while (pgraph->numE + 1 == pgraph->numV)
+    while (pgraph->numE + 1 > pgraph->numV) // '간선의 수 + 1 == 정점의 수'를 만족할 때 MST
     {
         // 우선순위 큐에서 가중치가 가장 큰 간선의 정보를 꺼냄
         edge = PDequeue(&(pgraph->pqueue));
@@ -225,7 +314,7 @@ void ConstructKruskalMST(ALGraph* pgraph)
         if (!IsConnectedVertex(pgraph, edge.vertex1, edge.vertex2))
         {
             // 삭제한 간선 복원
-            RecoverEdge(pgraph, edge.vertex1, edge.vertex2);
+            RecoverEdge(pgraph, edge.vertex1, edge.vertex2, edge.weight);
             // 복원한 간선의 정보를 복원할 간선 배열에 저장
             recoverEdgeArray[eIdx] = edge;
             // 복원할 간선 배열의 인덱스 증가
@@ -246,6 +335,6 @@ void ShowGraphEdgeWeightInfo(ALGraph* pgraph)
     while (!PQIsEmpty(&copyPQueue))
     {
         edge = PDequeue(&copyPQueue);
-        printf("(%c-%c), w : %d\n", edge.vertex1, edge.vertex2, edge.weight);
+        printf("(%c-%c), w : %d\n", edge.vertex1 + 65, edge.vertex2 + 65, edge.weight);
     }
 };
